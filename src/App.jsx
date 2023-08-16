@@ -1,4 +1,5 @@
 import {BrowserRouter as Router , Routes, Route} from "react-router-dom";
+import Navbar from "./components/Navbar/Navbar";
 import Explore from "./pages/Explore/Explore"
 import Profile from "./pages/Profile/Profile"
 import Offer from "./pages/Offer/Offer"
@@ -14,13 +15,13 @@ function App() {
     <Router>
       <Routes>
         <Route path="/" element={<Explore/>} />
-        <Route path="/Profile" element={<Profile/>} />
-        <Route path="/Sign-in" element={<SignIn/>} />
-        <Route path="/Sign-up" element={<SignUp/>} />
-        <Route path="/Forgot-Password" element={<ForgotPassword/>} />
-        <Route path="/Offer" element={<Offer/>} />
+        <Route path="/profile" element={<Profile/>} />
+        <Route path="/sign-in" element={<SignIn/>} />
+        <Route path="/sign-up" element={<SignUp/>} />
+        <Route path="/forgot-Password" element={<ForgotPassword/>} />
+        <Route path="/offer" element={<Offer/>} />
       </Routes>
-      {/* navbar */}
+      <Navbar/>
     </Router>
       
     </>
