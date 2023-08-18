@@ -25,7 +25,7 @@ function SignIn() {
     )
   }
 
-
+  
   return (
     <>
       <div className="pageContainer">
@@ -33,7 +33,7 @@ function SignIn() {
           <p>Welcome back!</p>
         </header>
         <main>
-          <form>
+          <form >
             <input className="emailInput" value={email} onChange={onChange} type="email" id="email" placeholder="Email"/>
             <div className="passwordInputDiv">
               <input className="passwordInput" value={password} onChange={onChange} type={showPassword ? 'text': 'password'} id="password" placeholder='Password'/>
