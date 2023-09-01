@@ -2,6 +2,7 @@
 import { useState } from "react"
 import { Link, useNavigate } from "react-router-dom"
 import {getAuth, createUserWithEmailAndPassword, updateProfile} from "firebase/auth"
+import { doc, setDoc, serverTimestamp } from "firebase/firestore";
 import { db } from "../../firebase.config";
 import {ReactComponent as KeyboardArrowRightIcon} from '../../assets/svg/keyboardArrowRightIcon.svg'
 import visibilityIcon from '../../assets/svg/visibilityIcon.svg'
@@ -36,10 +37,17 @@ function SignUp() {
       const auth = getAuth();
       console.log(auth)
       const userCredential = await  createUserWithEmailAndPassword(auth, email, password)
-      // const user = userCredential.user
+      const user = userCredential.user
       updateProfile(auth.currentUser, {
         displayName: name
       })
+
+      const formDataCopy = {...formData};
+      delete formDataCopy.password;
+      formDataCopy.timeStamp = serverTimestamp();
+
+      await setDoc(doc(db, 'users', user.uid), formDataCopy);
+
       navigate('/forgot-password')
       
     } catch (error) {
