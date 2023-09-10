@@ -33,8 +33,8 @@ function SignIn() {
       const auth = getAuth();
       const userCredential = await signInWithEmailAndPassword(auth, email, password);
       if (userCredential.user) {
-        navigate('./')
-      }
+        navigate('/profile')
+      } 
     } catch (error) {
       toast.error("bad user credentials.")
       
@@ -50,7 +50,7 @@ function SignIn() {
           <p>Welcome back!</p>
         </header>
         <main>
-          <form onSubmit={onSubmit}>
+          <form onSubmit={onSubmit} >
             <input className="emailInput" value={email} onChange={onChange} type="email" id="email" placeholder="Email"/>
             <div className="passwordInputDiv">
               <input className="passwordInput" value={password} onChange={onChange} type={showPassword ? 'text': 'password'} id="password" placeholder='Password'/>

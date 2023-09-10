@@ -6,6 +6,7 @@ import { doc, setDoc, serverTimestamp } from "firebase/firestore";
 import { db } from "../../firebase.config";
 import {ReactComponent as KeyboardArrowRightIcon} from '../../assets/svg/keyboardArrowRightIcon.svg'
 import visibilityIcon from '../../assets/svg/visibilityIcon.svg'
+import { toast } from 'react-toastify'
 
 function SignUp() {
 
@@ -48,10 +49,10 @@ function SignUp() {
 
       await setDoc(doc(db, 'users', user.uid), formDataCopy);
 
-      navigate('/forgot-password')
+      navigate('/sign-in')
       
     } catch (error) {
-      console.log(error)
+      toast.error('something went wrong with registeration')
     }
     
 
