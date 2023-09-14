@@ -7,6 +7,7 @@ import { db } from "../../firebase.config";
 import {ReactComponent as KeyboardArrowRightIcon} from '../../assets/svg/keyboardArrowRightIcon.svg'
 import visibilityIcon from '../../assets/svg/visibilityIcon.svg'
 import { toast } from 'react-toastify'
+import OAuth from "../../components/OAuth/OAuth";
 
 function SignUp() {
 
@@ -48,6 +49,7 @@ function SignUp() {
       formDataCopy.timeStamp = serverTimestamp();
 
       await setDoc(doc(db, 'users', user.uid), formDataCopy);
+      toast.success('your account has been created')
 
       navigate('/sign-in')
       
@@ -82,10 +84,10 @@ function SignUp() {
               </button>
             </div>
           </form>
-          {/* google oAuth */}
-            <Link to='/sign-in' className="registerLink">
-              <p>sign in instead</p>
-            </Link>
+          <OAuth/>
+          <Link to='/sign-in' className="registerLink">
+            <p>sign in instead</p>
+          </Link>
         </main>
       </div>
     </>

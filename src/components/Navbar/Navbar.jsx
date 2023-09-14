@@ -29,7 +29,7 @@ function Navbar() {
                     </li>
                     <li className="navbarListItem" onClick={()=>navigate('/offer')} >
                         <LocalOfferIcon  height="30px" width="30px" fill={pathMatchRoute('/offer') ? "#2c2c2c" : "#8f8f8f"}/>
-                        <p className={pathMatchRoute('/offer') ? 'navbarListItemNameActive' :'navbarListItemName' }>Offer</p>
+                        <p className={pathMatchRoute('/offer') ? 'navbarListItemNameActive' :'navbarListItemName' }>Offers</p>
                     </li>
                     <li className="navbarListItem" onClick={()=>navigate('/profile')}>
                         <PersonOutlineIcon  height="30px" width="30px" fill={pathMatchRoute('/profile') ? "#2c2c2c" : "#8f8f8f"} />

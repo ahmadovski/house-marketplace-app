@@ -1,6 +1,7 @@
 import { useState } from "react"
 import { Link, useNavigate } from "react-router-dom"
 import {getAuth, signInWithEmailAndPassword } from "firebase/auth"
+import OAuth from "../../components/OAuth/OAuth"
 import {ReactComponent as KeyboardArrowRightIcon} from '../../assets/svg/keyboardArrowRightIcon.svg'
 import { toast } from "react-toastify"
 import visibilityIcon from '../../assets/svg/visibilityIcon.svg'
@@ -64,7 +65,7 @@ function SignIn() {
               </button>
             </div>
           </form>
-          {/* google oAuth */}
+          <OAuth/>
             <Link to='/sign-up' className="registerLink">
               <p>sign up instead</p>
             </Link>
