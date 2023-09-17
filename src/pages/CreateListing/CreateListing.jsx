@@ -136,7 +136,6 @@ function CreateListing() {
       geolocation.lat = latitude;
       geolocation.lng = longitude;
       location = address;
-      console.log(formData);
     }
 
     //FileList to Array
@@ -165,7 +164,7 @@ function CreateListing() {
 
     //add doc to db
     const docRef = await addDoc(collection(db, "listings"), formDataCopy);
-    console.log(docRef);
+
     setLoading(false);
     toast.success("listing added successfully");
     navigate(`/category/${formDataCopy.type}/${docRef.id}`);
