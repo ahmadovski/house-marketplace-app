@@ -3,7 +3,6 @@ import { useNavigate } from "react-router-dom";
 import { collection, getDocs, query, orderBy, limit } from "firebase/firestore";
 import { db } from "../../firebase.config";
 import Spinner from "../Spinner/Spinner";
-import { Navigation, Pagination, Scrollbar, A11y } from "swiper/modules";
 import { Swiper, SwiperSlide } from "swiper/react";
 import "swiper/css";
 import "swiper/css/navigation";
@@ -31,7 +30,6 @@ function Slider() {
             data: doc.data(),
           });
           setListing(listings);
-          console.log(listings);
           setLoading(false);
           return;
         });

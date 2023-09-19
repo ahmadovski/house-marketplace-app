@@ -1,5 +1,5 @@
-import { useEffect, useRef, useState } from "react";
-import { Link, useNavigate, useParams } from "react-router-dom";
+import { useEffect, useState } from "react";
+import { Link, useParams } from "react-router-dom";
 import { getDoc, doc } from "firebase/firestore";
 import { db } from "../../firebase.config";
 import Spinner from "../../components/Spinner/Spinner";
@@ -8,6 +8,7 @@ import { getAuth } from "firebase/auth";
 import shareIcon from "../../assets/svg/shareIcon.svg";
 import { Navigation, Pagination, Scrollbar, A11y } from "swiper/modules";
 import { Swiper, SwiperSlide } from "swiper/react";
+import { MapContainer, TileLayer, Marker, Popup } from "react-leaflet";
 import "swiper/css";
 import "swiper/css/navigation";
 import "swiper/css/pagination";
@@ -15,18 +16,16 @@ import "swiper/css/scrollbar";
 
 function Listing() {
   // when initial state is set to null sometimes we get an error on reloads...idk why
-  const [listing, setListing] = useState({});
+  const [listing, setListing] = useState(null);
   const [loading, setLoading] = useState(true);
   const [shareLinkCopied, setShareLinkCopied] = useState(null);
 
-  const navigate = useNavigate();
   const param = useParams();
   const auth = getAuth();
 
   useEffect(() => {
     const fetchListing = async () => {
       try {
-        // console.log("try");
         const docRef = doc(db, "listings", param.listingId);
         const docSnap = await getDoc(docRef);
         if (docSnap.exists()) {
@@ -44,9 +43,6 @@ function Listing() {
 
     fetchListing();
   }, [param]);
-
-  const testImageUrl =
-    " https://t3.ftcdn.net/jpg/01/62/06/40/360_F_162064034_HI2YEgV7km3HMy0rccQczKH2vvpI4OnB.jpg";
 
   if (loading) {
     return <Spinner />;
@@ -128,8 +124,31 @@ function Listing() {
 
           <p className='listingLocationTitle'>Location</p>
 
-          {/* map */}
-
+          <MapContainer
+            style={{ height: "200px", width: "100%" }}
+            center={[
+              parseFloat(listing.geolocation.lat),
+              parseFloat(listing.geolocation.lon),
+            ]}
+            zoom={13}
+            scrollWheelZoom={false}
+          >
+            <TileLayer
+              attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+              url='https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png'
+            />
+            <Marker
+              position={[
+                parseFloat(listing.geolocation.lat),
+                parseFloat(listing.geolocation.lon),
+              ]}
+            >
+              <Popup>
+                A pretty CSS3 popup. <br /> Easily customizable.
+              </Popup>
+            </Marker>
+          </MapContainer>
+          <br />
           {auth.currentUser?.uid !== listing.userRef && (
             <Link
               to={`/contact/${listing.userRef}?listingName=${listing.name}&listingLocation=${listing.location}`}

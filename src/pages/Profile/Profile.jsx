@@ -43,7 +43,6 @@ function Profile() {
         where("userRef", "==", auth.currentUser.uid),
         orderBy("timestamp", "desc")
       );
-
       const querySnap = await getDocs(q);
       querySnap.docs.forEach((doc) =>
         listings.push({
@@ -52,10 +51,10 @@ function Profile() {
         })
       );
       setListings(listings);
+      setLoading(false);
     };
 
     fetchListings();
-    setLoading(false);
   }, [auth.currentUser.uid]);
 
   const onLogout = () => {

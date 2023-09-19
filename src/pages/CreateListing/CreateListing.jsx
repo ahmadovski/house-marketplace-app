@@ -15,7 +15,7 @@ import { toast } from "react-toastify";
 
 function CreateListing() {
   const [loading, setLoading] = useState(false);
-  const [geoLocationEnabled, setGeoLocationEnabled] = useState(false);
+  const [geoLocationEnabled, setGeoLocationEnabled] = useState(true);
   const [formData, setFormData] = useState({
     type: "rent",
     name: "",
@@ -78,6 +78,8 @@ function CreateListing() {
             case "running":
               console.log("Upload is running");
               break;
+            default:
+              break;
           }
         },
         (error) => {
@@ -116,16 +118,28 @@ function CreateListing() {
       location;
 
     if (geoLocationEnabled) {
+      //geocodes.map.co api
       const response = await fetch(
-        `https://maps.googleapis.com/map/api/geocode/json?address=${address}&key=${process.env.REACT_APP_GEOLOCATION_API_KEY}`
+        `https://geocode.maps.co/search?q=${address}`
       );
-      const data = response.json();
-      geolocation.lat = data.results[0]?.geometry.location.lat ?? 0;
-      geolocation.lng = data.results[0]?.geometry.location.lng ?? 0;
-      location =
-        data.status === "ZERO_RESULTS"
-          ? undefined
-          : data.results[0]?.formatted_address;
+      const data = await response.json();
+      geolocation.lat = data[0]?.lat ?? 0;
+      geolocation.lon = data[0]?.lon ?? 0;
+      location = data[0]?.display_name;
+
+      //google api for geocoding needs cart info
+
+      // if (geoLocationEnabled) {
+      //   const response = await fetch(
+      //     `https://maps.googleapis.com/map/api/geocode/json?address=${address}&key=${process.env.REACT_APP_GEOLOCATION_API_KEY}`
+      //   );
+      //   const data = response.json();
+      //   geolocation.lat = data.results[0]?.geometry.location.lat ?? 0;
+      //   geolocation.lng = data.results[0]?.geometry.location.lng ?? 0;
+      //   location =
+      //     data.status === "ZERO_RESULTS"
+      //       ? undefined
+      //       : data.results[0]?.formatted_address;
 
       if (location === undefined || location.includes("undefined")) {
         setLoading(false);
@@ -134,7 +148,7 @@ function CreateListing() {
       }
     } else {
       geolocation.lat = latitude;
-      geolocation.lng = longitude;
+      geolocation.lon = longitude;
       location = address;
     }
 
@@ -159,6 +173,8 @@ function CreateListing() {
     };
     delete formDataCopy.address;
     delete formDataCopy.images;
+    delete formDataCopy.latitude;
+    delete formDataCopy.longitude;
     location && (formDataCopy.location = location);
     !formDataCopy.offer && delete formDataCopy.discountedPrice;
 

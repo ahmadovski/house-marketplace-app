@@ -1,14 +1,14 @@
 import { useState, useEffect } from "react";
 import { useParams, useSearchParams } from "react-router-dom";
-import { DocumentSnapshot, doc, getDoc } from "firebase/firestore";
+import { doc, getDoc } from "firebase/firestore";
 import { db } from "../../firebase.config";
 import { toast } from "react-toastify";
 import Spinner from "../../components/Spinner/Spinner";
-import { getAuth } from "firebase/auth";
 
 function Contact() {
   const [message, setMessage] = useState(" ");
   const [landlord, setLandlord] = useState(null);
+  const [loading, setLoading] = useState(true);
   const [searchParams, setSearchParams] = useSearchParams();
 
   const params = useParams();
@@ -19,8 +19,10 @@ function Contact() {
       const docSnap = await getDoc(docRef);
       if (docSnap.exists()) {
         setLandlord(docSnap.data());
+        setLoading(false);
       } else {
         toast.error("could not get landlord data");
+        setLoading(false);
       }
     };
 
@@ -31,12 +33,14 @@ function Contact() {
     setMessage(e.target.value);
   };
 
-  return (
-    <div className='pageConatainer'>
-      <header>
-        <p className='pageHeader'>Contact landlord</p>
-      </header>
-      {landlord !== null && (
+  if (loading) return <Spinner />;
+
+  if (landlord !== null)
+    return (
+      <div className='pageConatainer'>
+        <header>
+          <p className='pageHeader'>Contact landlord</p>
+        </header>
         <main>
           <div className='contactLandlord'>
             <p className='landlordName'>Contact {landlord?.name}</p>
@@ -65,9 +69,8 @@ function Contact() {
             </a>
           </form>
         </main>
-      )}
-    </div>
-  );
+      </div>
+    );
 }
 
 export default Contact;
